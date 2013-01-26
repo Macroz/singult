@@ -36,6 +36,14 @@ namespace_tag = (tag_str) ->
   else
     if tag_str.match(re_svg_tags) then [xmlns.svg, tag_str] else [xmlns.xhtml, tag_str]
 
+#Determines namespace URI from attribute string, defaulting to null. Returns [nsp att]
+namespace_att = (att_str) ->
+  [nsp, att] = att_str.split ":"
+  if att?
+    [xmlns[nsp] or nsp, att]
+  else
+    [null, att_str]
+
 
 ####################
 # EMBRACE THE DUCK!
@@ -83,10 +91,18 @@ singult.coffee.attr = ($e, attr_map) ->
     delete attr_map["class"]
 
   for own k, v of attr_map
+    #Sheck if the attribute belongs to a namespace
+    [nsp, k] = namespace_att k
     if v?
-      $e.setAttribute k, v
+      if nsp?
+        $e.setAttributeNS nsp, k, v
+      else
+        $e.setAttribute k, v
     else
-      $e.removeAttribute k
+      if nsp?
+        $e.removeAttributeNS nsp, k
+      else
+        $e.removeAttribute k 
 
 singult.coffee.node_data = ($e, d) ->
   if d?
