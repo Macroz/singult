@@ -26,6 +26,7 @@ key_prefix = "\0"
 xmlns =
   xhtml: "http://www.w3.org/1999/xhtml"
   svg: "http://www.w3.org/2000/svg"
+  xlink: "http://www.w3.org/1999/xlink"
 
 #Determines namespace URI from tag string, defaulting to xhtml. Returns [nsp tag]
 namespace_tag = (tag_str) ->
