@@ -63,6 +63,10 @@
 (let [$e (render [:div (ignore)])]
   (assert (= 0 (.-length (.-children $e)))))
 
+;;It should work with namespaces
+(let [$e (render [:div [:svg:image {:xlink:href "foo.jpg"}]])]
+  (assert (= "foo.jpg" (.getAttributeNS (.querySelector $e "image") "http://www.w3.org/1999/xlink" "href"))
+          "Attribute must accessible in correct namespace"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;Test merge!
